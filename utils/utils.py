@@ -49,11 +49,11 @@ def run_pipeline(model, train_iter, val_iter, test_iter, data_dir, fraction=1.0,
     if save:
         models_path = PATH_TO_MODELS + f'{model.name}/{file_name}'
         results_path = PATH_TO_RESULTS + f'{model.name}/{file_name}'
-        if file_name in listdir(PATH_TO_MODELS + '/' + model.name) and not save_ow:
-            print(f"Loading model {file_name} found in path...")
+        if file_name in listdir(PATH_TO_RESULTS + '/' + model.name) and not save_ow:
+            # print(f"Loading model {file_name} found in path...")
             should_train = False
-            model.load_state_dict(torch.load(models_path, map_location=device))
-            model.eval()
+            # model.load_state_dict(torch.load(models_path, map_location=device))
+            # model.eval()
             print("Loading results found in path...")
             results = torch.load(results_path, map_location=device)
 
