@@ -63,18 +63,33 @@ def load_vi2en(vi2en_dir="vi2en"):
       wget -nv -O {path}/train.src https://nlp.stanford.edu/projects/nmt/data/iwslt15.en-vi/train.vi
       wget -nv -O {path}/test.tgt https://nlp.stanford.edu/projects/nmt/data/iwslt15.en-vi/tst2013.en
       wget -nv -O {path}/test.src https://nlp.stanford.edu/projects/nmt/data/iwslt15.en-vi/tst2013.vi
-    """)
-      # wget -nv -O {path}/vocab.en https://nlp.stanford.edu/projects/nmt/data/iwslt15.en-vi/vocab.en
-      # wget -nv -O {path}/vocab.vi https://nlp.stanford.edu/projects/nmt/data/iwslt15.en-vi/vocab.vi
-    
+    """)    
     print("Successfully downloaded Vietnamese-to-English MT dataset!")
   else:
     print("Vi2En dataset already loaded!")
+
+def load_ge2en(ge2en_dir="ge2en"):
+  """Load the dataset used in homework 3 of 6864"""
+
+  print("Loading ge2en dataset...")
+  path = get_path(ge2en_dir)
+  if not set(DIRS).issubset(set(os.listdir(path))):
+    shell(f""" 
+      wget -nv -O {path}/train.tgt https://nlp.stanford.edu/projects/nmt/data/wmt14.en-de/train.en
+      wget -nv -O {path}/train.src https://nlp.stanford.edu/projects/nmt/data/wmt14.en-de/train.de
+      wget -nv -O {path}/test.tgt https://nlp.stanford.edu/projects/nmt/data/wmt14.en-de/newstest2015.en
+      wget -nv -O {path}/test.src https://nlp.stanford.edu/projects/nmt/data/wmt14.en-de/newstest2015.de
+    """)
+    print("Successfully downloaded German-to-English MT dataset!")
+  else:
+    print("Ge2En dataset already loaded!")
+
 
 def load_datasets():
   print("Loading all datasets...")
   load_words2num()
   load_vi2en()
+  load_ge2en()
 
 if __name__ == '__main__':
   load_datasets()

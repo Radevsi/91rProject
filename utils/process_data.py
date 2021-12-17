@@ -2,7 +2,7 @@ import os
 import warnings
 import torch
 import torchtext.legacy as tt
-from utils.load_data import shell, load_datasets, load_vi2en, load_words2num
+from utils.load_data import shell, load_datasets, load_vi2en, load_words2num, load_ge2en
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -11,12 +11,9 @@ warnings.filterwarnings("ignore", module="torchtext", category=UserWarning)
 
 # Make splits for data
 def split_datasets(fields, dir, val_split):
-    dir = 'data/' + dir
-    if dir == 'data/vi2en': # handle the machine translation task            
-        load_vi2en()
+    def process_mt_data(dir):
         if 'tmp.src' not in os.listdir(dir): # need to do this on first run
             for file in [f'{dir}/train.src', f'{dir}/train.tgt']:
-                print("AHHHHHHHHHHHHHHH"*5)
                 # Make new filenames 
                 val_file = file.replace('train', 'dev')
                 tmp_file = file.replace('train', 'tmp')
@@ -40,11 +37,20 @@ def split_datasets(fields, dir, val_split):
                 val_file.close()
                 tmp_file.close()
 
-        # Move the tmp contents to train
-        shell(f"cp {dir}/tmp.src {dir}/train.src")
-        shell(f"cp {dir}/tmp.tgt {dir}/train.tgt")
+            # Move the tmp contents to train
+            shell(f"cp {dir}/tmp.src {dir}/train.src")
+            shell(f"cp {dir}/tmp.tgt {dir}/train.tgt")        
+    dir = 'data/' + dir
+    if dir == 'data/vi2en': # handle the machine translation task            
+        load_vi2en()
+        process_mt_data(dir)
         # shell(f"rm -rf {dir}/tmp.*")
         print("Finished processing the Vietnamese to English specific part.")
+    elif dir == 'data/ge2en': # handle the machine translation task            
+        load_ge2en()
+        process_mt_data(dir)
+        # shell(f"rm -rf {dir}/tmp.*")
+        print("Finished processing the German to English specific part.")        
     else:
         load_words2num()
 
