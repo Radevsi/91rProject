@@ -29,6 +29,9 @@ def parse_args():
     if '--mt' in argv: # run the machine translation task
         data_dir = 'vi2en'
         n_correct_args += 1
+    if '--mt-large' in argv: # run on the German-English dataset
+        data_dir = 'ge2en'
+        n_correct_args += 1
     if '--rnn' in argv: # run the rnn-based encoder-decoder model
         run_rnn_model = True
         n_correct_args += 1
@@ -106,6 +109,7 @@ def parse_args():
         print("Usage: python main.py [args]\n"
               "Supported [args]:\n"
               "  --mt: Run the machine translation task on the vi2en dataset\n"
+              "  --mt-large: Run the machine translation task on the ge2en dataset\n"
               "  --rnn: Run the rnn-based encoder-decoder model\n"
               "  --make-metrics: Run the selected model on splits of training data and return metrics\n"
               "  --make-metrics-all: Run all models on splits of training data and return metrics\n"
