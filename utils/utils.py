@@ -43,8 +43,10 @@ def run_pipeline(model, train_iter, val_iter, test_iter, data_dir, fraction=1.0,
     # Define paths to save to
     PATH_TO_MODELS = f'{path}/models/'
     PATH_TO_RESULTS = f'{path}/results/'
-    # file_name = f"{data_dir}_{epochs}es_{lr}lr_{hz}h_{layers}l_{fraction}frac.pt" 
-    file_name = f"{epochs}es_{lr}lr_{hz}h_{layers}l_{fraction}frac.pt" 
+    if data_dir == 'ge2en':
+        file_name = f"{data_dir}_{epochs}es_{lr}lr_{hz}h_{layers}l_{fraction}frac.pt" 
+    else:
+        file_name = f"{epochs}es_{lr}lr_{hz}h_{layers}l_{fraction}frac.pt" 
     should_train = True
     if save:
         models_path = PATH_TO_MODELS + f'{model.name}/{file_name}'
@@ -140,11 +142,14 @@ def plot_metrics(metrics, total_times, heading, png_name):
             test_ppls.append(metrics[model][fraction][0])
             training_times.append(total_times[model][fraction][0])
         ax[0].plot(fractions, test_ppls, '+-', label=model.name)
-        ax[1].plot(training_times, test_ppls, '+-', label=model.name) # this is a wrong plot
+        ax[1].plot(training_times, test_ppls, '+-', label=model.name) 
+        
+        ax[0].set_ylim([0, 700])
+        ax[1].set_ylim([0, 700])
         # ax[1].plot(fractions, training_times, label=model.name) # this is a wrong plot
     ax[0].set_title("Test Perplexity For Different Data Sizes")
     ax[0].set_xlabel("Fraction of data used")
-    ax[0].set_ylabel("Test ppl")
+    ax[0].set_ylabel("Test Perplexity")
     ax[0].legend()
         
     ax[1].set_title("Test Perplexity For Different Training Times")
@@ -152,7 +157,7 @@ def plot_metrics(metrics, total_times, heading, png_name):
     # ax[1].set_ylabel("Training time (s)")
     ax[1].legend()
 
-    plt.savefig(png_name+'.png')
+    plt.savefig('norm_'+png_name+'.png')
     
     plt.show()
     
